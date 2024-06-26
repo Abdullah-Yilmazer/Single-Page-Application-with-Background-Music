@@ -16,7 +16,23 @@ This project is a simple single page application (SPA) built with plain HTML, CS
     git clone https://github.com/Abdullah-Yilmazer/Single-Page-Application-with-Background-Music.git
     cd your-repo-name
     ```
-2. Open `index.html` in your browser.
+2. Start a local server:
+    - Using Python 3:
+        ```sh
+        python -m http.server
+        ```
+    - Using Node.js (http-server):
+        ```sh
+        npx http-server
+        ```
+    - Using Live Server extension in VSCode:
+        - Install [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension.
+        - Right-click `index.html` and select `Open with Live Server`.
+    - Or any server system
+
+
+3. Open your browser and navigate to `http://localhost:8000` (or the address provided by your server).
+
 
 ## Turkish - Türkçe
 
@@ -36,7 +52,23 @@ Bu proje, saf HTML, CSS ve JavaScript ile oluşturulmuş basit bir tek sayfa uyg
     git clone https://github.com/Abdullah-Yilmazer/Single-Page-Application-with-Background-Music.git
     cd your-repo-name
     ```
-2. `index.html` dosyasını tarayıcınızda açın.
+2. Yerel bir sunucu başlatın:
+    - Python 3 kullanarak:
+        ```sh
+        python -m http.server
+        ```
+    - Node.js (http-server) kullanarak:
+        ```sh
+        npx http-server
+        ```
+    - VSCode'da Live Server uzantısını kullanarak:
+        - [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) uzantısını kurun.
+        - `index.html` dosyasına sağ tıklayın ve `Open with Live Server` seçeneğini seçin.
+     
+    - Ya da herhangi bir sunucu sistemi
+
+3. Tarayıcınızı açın ve `http://localhost:8000` adresine gidin (veya sunucunuzun verdiği adrese).
+
 
 ## License
 
