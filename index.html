@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA with Background Music</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        html { scroll-behavior: smooth; }
+        nav { margin-bottom: 20px; }
+        .content { min-height: 200px; }
+        section { margin-bottom: 20px; }
+        .music-player { position: fixed; bottom: 20px; left: 20px; z-index: 1000; }
+        #music-toggle { border: none; padding: 10px; border-radius: 50%; cursor: pointer; background: none; }
+        #music-toggle svg { width: 32px; }
+        .menus { position: fixed; right: 20px; top: 50%; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body>
+    <nav>
+        <button onclick="navigateTo('/home')">Home</button>
+        <button onclick="navigateTo('/about')">About</button>
+        <button onclick="navigateTo('/contact')">Contact</button>
+    </nav>
+    <div class="menus">
+        <button onclick="navigateTo('/about#section1')">section1</button>
+        <button onclick="navigateTo('/about#section2')">section2</button>
+        <button onclick="navigateTo('/about#section3')">section3</button>
+    </div>
+    <div id="app" class="content">
+        <!-- Dynamic content will be loaded here -->
+    </div>
+    <div class="music-player">
+        <button id="music-toggle">
+            <svg viewBox="-1 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Dribbble-Light-Preview" transform="translate(-65.000000, -3803.000000)" fill="#000000">
+                            <g id="icons" transform="translate(56.000000, 160.000000)">
+                                <path d="M18.074,3650.7335 L12.308,3654.6315 C10.903,3655.5815 9,3654.5835 9,3652.8985 L9,3645.1015 C9,3643.4155 10.903,3642.4185 12.308,3643.3685 L18.074,3647.2665 C19.306,3648.0995 19.306,3649.9005 18.074,3650.7335" id="play-[#1000]"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </button>
+        <audio id="background-music" loop>
+            <source src="./media/videoplayback.m4a" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    <script src="./js/jQery/jquery-2.2.0.min.js"></script>
+    <script>
+        const app = document.getElementById("app");
+
+        function loadCSS(href) {
+            // Check if CSS file is already loaded
+            if (!document.querySelector(`link[href="${href}"]`)) {
+                const link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.href = href;
+                link.setAttribute('data-page-specific', 'true');
+                document.head.appendChild(link);
+            }
+        }
+
+        function loadJS(src) {
+            // Check if JS file is already loaded
+            if (!document.querySelector(`script[src="${src}"]`)) {
+                const script = document.createElement("script");
+                script.src = src;
+                script.setAttribute('data-page-specific', 'true');
+                document.body.appendChild(script);
+            }
+        }
+
+        async function loadContent(page) {
+            try {
+                const response = await fetch(`${page}.html`);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const content = await response.text();
+                app.innerHTML = content;
+
+                // Remove existing page-specific CSS and JS
+                document.querySelectorAll("link[rel=stylesheet][data-page-specific]").forEach(el => el.remove());
+                document.querySelectorAll("script[data-page-specific]").forEach(el => el.remove());
+
+                // Load page-specific CSS and JS
+                loadCSS(`css${page}.css`);
+                loadJS(`js${page}.js`);
+
+                // Scroll to the hash section if it exists
+                const hash = window.location.hash.substring(1);
+                if (hash) {
+                    document.getElementById(hash).scrollIntoView();
+                }
+            } catch (error) {
+                app.innerHTML = "<h1>404</h1><p>Page not found.</p>";
+            }
+        }
+
+        function navigateTo(path) {
+            const [basePath, hash] = path.split("#");
+            history.pushState({ path }, null, path);
+            loadContent(basePath);
+
+            if (hash) {
+                setTimeout(() => {
+                    document.getElementById(hash).scrollIntoView();
+                }, 0);
+            }
+        }
+
+        window.addEventListener("popstate", event => {
+            const path = event.state ? event.state.path : "/home";
+            loadContent(path);
+        });
+
+        // Initial load
+        const initialPath = location.pathname === "/" ? "/home" : location.pathname;
+        loadContent(initialPath);
+    </script>
+    <script>
+        $(document).ready(function () {
+            var music = $("#background-music")[0];
+            var toggleButton = $("#music-toggle");
+
+            // Müzik oynatıcı butonuna tıklama olayını dinleyin
+            toggleButton.on("click", function () {
+                if (music.paused) {
+                    music
+                        .play()
+                        .then(function () {
+                            localStorage.setItem("music-playing", "true");
+                            toggleButton.html(
+                                '<svg viewBox="0 0 24 24" ><g> <rect width="24" height="24" fill="transparent"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M20 5L20 19C20 20.6569 18.6569 22 17 22L16 22C14.3431 22 13 20.6569 13 19L13 5C13 3.34314 14.3431 2 16 2L17 2C18.6569 2 20 3.34315 20 5Z" fill="#323232"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M8 2C9.65685 2 11 3.34315 11 5L11 19C11 20.6569 9.65685 22 8 22L7 22C5.34315 22 4 20.6569 4 19L4 5C4 3.34314 5.34315 2 7 2L8 2Z" fill="#323232"></path> </g></svg>'
+                            );
+                        })
+                        .catch(function (error) {
+                            console.error("Müzik oynatılamadı: ", error);
+                        });
+                } else {
+                    music.pause();
+                    localStorage.setItem("music-playing", "false");
+                    toggleButton.html(
+                        '<svg viewBox="-1 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>play [#1000]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-65.000000, -3803.000000)" fill="#000000"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M18.074,3650.7335 L12.308,3654.6315 C10.903,3655.5815 9,3654.5835 9,3652.8985 L9,3645.1015 C9,3643.4155 10.903,3642.4185 12.308,3643.3685 L18.074,3647.2665 C19.306,3648.0995 19.306,3649.9005 18.074,3650.7335" id="play-[#1000]"> </path> </g> </g> </g> </g></svg>'
+                    );
+                }
+            });
+        });
+    </script>
+</body>
+</html>
