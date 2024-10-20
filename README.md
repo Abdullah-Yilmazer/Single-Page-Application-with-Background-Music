@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./screenshot.png" alt="Screenhot"/>
+</p>
+
 # Single Page Application with Background Music
 
 This project is a simple single page application (SPA) built with plain HTML, CSS, and JavaScript. It includes a background music player that continues to play while navigating between pages.
