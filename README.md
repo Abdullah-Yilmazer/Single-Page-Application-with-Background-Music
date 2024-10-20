@@ -13,6 +13,10 @@ This project is a simple single page application (SPA) built with plain HTML, CS
 - Smooth scrolling to section anchors.
 - Page-specific CSS and JavaScript loading.
 
+## Demo
+
+You can see a live demo of the application [here](https://abdullah-yilmazer.github.io/Single-Page-Application-with-Background-Music/).
+
 ## How to Run
 
 1. Clone the repository:
@@ -48,6 +52,10 @@ Bu proje, saf HTML, CSS ve JavaScript ile oluşturulmuş basit bir tek sayfa uyg
 - Farklı sayfalarda çalmaya devam eden arka plan müziği.
 - Bölüm bağlantılarına yumuşak kaydırma.
 - Sayfaya özel CSS ve JavaScript yükleme.
+
+## Demo
+
+Uygulamanın canlı demosunu [buradan](https://abdullah-yilmazer.github.io/Single-Page-Application-with-Background-Music/) görebilirsiniz.
 
 ## Nasıl Çalıştırılır
 
